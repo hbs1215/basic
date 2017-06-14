@@ -1,0 +1,644 @@
+Terminals unused in grammar
+
+   MODULO
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: line
+    2        | line program
+
+    3 line: LINENUM command '\n'
+
+    4 command: REM STRING
+    5        | GOTO INTEGER
+    6        | LET VAR '=' expr
+    7        | LET VAR '[' expr ']' '=' expr
+    8        | DIM VAR AS '[' expr ']'
+    9        | PRINT expr
+   10        | INPUT VAR
+   11        | IF expr THEN INTEGER
+
+   12 expr: expr PLUS term
+   13     | expr MINUS term
+   14     | LINENUM
+   15     | VAR
+   16     | term
+
+   17 term: term DIVIDE factor
+   18     | term MULTI factor
+   19     | factor
+
+   20 factor: '(' expr ')'
+   21       | INTEGER
+   22       | UNARY_OP factor
+
+   23 INTEGER: INTEGER DIGIT
+   24        | DIGIT
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'\n' (10) 3
+'(' (40) 20
+')' (41) 20
+'=' (61) 6 7
+'[' (91) 7 8
+']' (93) 7 8
+error (256)
+LINENUM (258) 3 14
+REM (259) 4
+GOTO (260) 5
+LET (261) 6 7
+DIM (262) 8
+AS (263) 8
+PRINT (264) 9
+INPUT (265) 10
+VAR (266) 6 7 8 10 15
+PLUS (267) 12
+MINUS (268) 13
+MODULO (269)
+MULTI (270) 18
+DIVIDE (271) 17
+UNARY_OP (272) 22
+IF (273) 11
+THEN (274) 11
+DIGIT (275) 23 24
+STRING (276) 4
+
+
+Nonterminals, with rules where they appear
+
+$accept (28)
+    on left: 0
+program (29)
+    on left: 1 2, on right: 0 2
+line (30)
+    on left: 3, on right: 1 2
+command (31)
+    on left: 4 5 6 7 8 9 10 11, on right: 3
+expr (32)
+    on left: 12 13 14 15 16, on right: 6 7 8 9 11 12 13 20
+term (33)
+    on left: 17 18 19, on right: 12 13 16 17 18
+factor (34)
+    on left: 20 21 22, on right: 17 18 19 22
+INTEGER (35)
+    on left: 23 24, on right: 5 11 21 23
+
+
+State 0
+
+    0 $accept: . program $end
+
+    LINENUM  shift, and go to state 1
+
+    program  go to state 2
+    line     go to state 3
+
+
+State 1
+
+    3 line: LINENUM . command '\n'
+
+    REM    shift, and go to state 4
+    GOTO   shift, and go to state 5
+    LET    shift, and go to state 6
+    DIM    shift, and go to state 7
+    PRINT  shift, and go to state 8
+    INPUT  shift, and go to state 9
+    IF     shift, and go to state 10
+
+    command  go to state 11
+
+
+State 2
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 12
+
+
+State 3
+
+    1 program: line .
+    2        | line . program
+
+    LINENUM  shift, and go to state 1
+
+    $default  reduce using rule 1 (program)
+
+    program  go to state 13
+    line     go to state 3
+
+
+State 4
+
+    4 command: REM . STRING
+
+    STRING  shift, and go to state 14
+
+
+State 5
+
+    5 command: GOTO . INTEGER
+
+    DIGIT  shift, and go to state 15
+
+    INTEGER  go to state 16
+
+
+State 6
+
+    6 command: LET . VAR '=' expr
+    7        | LET . VAR '[' expr ']' '=' expr
+
+    VAR  shift, and go to state 17
+
+
+State 7
+
+    8 command: DIM . VAR AS '[' expr ']'
+
+    VAR  shift, and go to state 18
+
+
+State 8
+
+    9 command: PRINT . expr
+
+    LINENUM   shift, and go to state 19
+    VAR       shift, and go to state 20
+    UNARY_OP  shift, and go to state 21
+    DIGIT     shift, and go to state 15
+    '('       shift, and go to state 22
+
+    expr     go to state 23
+    term     go to state 24
+    factor   go to state 25
+    INTEGER  go to state 26
+
+
+State 9
+
+   10 command: INPUT . VAR
+
+    VAR  shift, and go to state 27
+
+
+State 10
+
+   11 command: IF . expr THEN INTEGER
+
+    LINENUM   shift, and go to state 19
+    VAR       shift, and go to state 20
+    UNARY_OP  shift, and go to state 21
+    DIGIT     shift, and go to state 15
+    '('       shift, and go to state 22
+
+    expr     go to state 28
+    term     go to state 24
+    factor   go to state 25
+    INTEGER  go to state 26
+
+
+State 11
+
+    3 line: LINENUM command . '\n'
+
+    '\n'  shift, and go to state 29
+
+
+State 12
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 13
+
+    2 program: line program .
+
+    $default  reduce using rule 2 (program)
+
+
+State 14
+
+    4 command: REM STRING .
+
+    $default  reduce using rule 4 (command)
+
+
+State 15
+
+   24 INTEGER: DIGIT .
+
+    $default  reduce using rule 24 (INTEGER)
+
+
+State 16
+
+    5 command: GOTO INTEGER .
+   23 INTEGER: INTEGER . DIGIT
+
+    DIGIT  shift, and go to state 30
+
+    $default  reduce using rule 5 (command)
+
+
+State 17
+
+    6 command: LET VAR . '=' expr
+    7        | LET VAR . '[' expr ']' '=' expr
+
+    '='  shift, and go to state 31
+    '['  shift, and go to state 32
+
+
+State 18
+
+    8 command: DIM VAR . AS '[' expr ']'
+
+    AS  shift, and go to state 33
+
+
+State 19
+
+   14 expr: LINENUM .
+
+    $default  reduce using rule 14 (expr)
+
+
+State 20
+
+   15 expr: VAR .
+
+    $default  reduce using rule 15 (expr)
+
+
+State 21
+
+   22 factor: UNARY_OP . factor
+
+    UNARY_OP  shift, and go to state 21
+    DIGIT     shift, and go to state 15
+    '('       shift, and go to state 22
+
+    factor   go to state 34
+    INTEGER  go to state 26
+
+
+State 22
+
+   20 factor: '(' . expr ')'
+
+    LINENUM   shift, and go to state 19
+    VAR       shift, and go to state 20
+    UNARY_OP  shift, and go to state 21
+    DIGIT     shift, and go to state 15
+    '('       shift, and go to state 22
+
+    expr     go to state 35
+    term     go to state 24
+    factor   go to state 25
+    INTEGER  go to state 26
+
+
+State 23
+
+    9 command: PRINT expr .
+   12 expr: expr . PLUS term
+   13     | expr . MINUS term
+
+    PLUS   shift, and go to state 36
+    MINUS  shift, and go to state 37
+
+    $default  reduce using rule 9 (command)
+
+
+State 24
+
+   16 expr: term .
+   17 term: term . DIVIDE factor
+   18     | term . MULTI factor
+
+    MULTI   shift, and go to state 38
+    DIVIDE  shift, and go to state 39
+
+    $default  reduce using rule 16 (expr)
+
+
+State 25
+
+   19 term: factor .
+
+    $default  reduce using rule 19 (term)
+
+
+State 26
+
+   21 factor: INTEGER .
+   23 INTEGER: INTEGER . DIGIT
+
+    DIGIT  shift, and go to state 30
+
+    $default  reduce using rule 21 (factor)
+
+
+State 27
+
+   10 command: INPUT VAR .
+
+    $default  reduce using rule 10 (command)
+
+
+State 28
+
+   11 command: IF expr . THEN INTEGER
+   12 expr: expr . PLUS term
+   13     | expr . MINUS term
+
+    PLUS   shift, and go to state 36
+    MINUS  shift, and go to state 37
+    THEN   shift, and go to state 40
+
+
+State 29
+
+    3 line: LINENUM command '\n' .
+
+    $default  reduce using rule 3 (line)
+
+
+State 30
+
+   23 INTEGER: INTEGER DIGIT .
+
+    $default  reduce using rule 23 (INTEGER)
+
+
+State 31
+
+    6 command: LET VAR '=' . expr
+
+    LINENUM   shift, and go to state 19
+    VAR       shift, and go to state 20
+    UNARY_OP  shift, and go to state 21
+    DIGIT     shift, and go to state 15
+    '('       shift, and go to state 22
+
+    expr     go to state 41
+    term     go to state 24
+    factor   go to state 25
+    INTEGER  go to state 26
+
+
+State 32
+
+    7 command: LET VAR '[' . expr ']' '=' expr
+
+    LINENUM   shift, and go to state 19
+    VAR       shift, and go to state 20
+    UNARY_OP  shift, and go to state 21
+    DIGIT     shift, and go to state 15
+    '('       shift, and go to state 22
+
+    expr     go to state 42
+    term     go to state 24
+    factor   go to state 25
+    INTEGER  go to state 26
+
+
+State 33
+
+    8 command: DIM VAR AS . '[' expr ']'
+
+    '['  shift, and go to state 43
+
+
+State 34
+
+   22 factor: UNARY_OP factor .
+
+    $default  reduce using rule 22 (factor)
+
+
+State 35
+
+   12 expr: expr . PLUS term
+   13     | expr . MINUS term
+   20 factor: '(' expr . ')'
+
+    PLUS   shift, and go to state 36
+    MINUS  shift, and go to state 37
+    ')'    shift, and go to state 44
+
+
+State 36
+
+   12 expr: expr PLUS . term
+
+    UNARY_OP  shift, and go to state 21
+    DIGIT     shift, and go to state 15
+    '('       shift, and go to state 22
+
+    term     go to state 45
+    factor   go to state 25
+    INTEGER  go to state 26
+
+
+State 37
+
+   13 expr: expr MINUS . term
+
+    UNARY_OP  shift, and go to state 21
+    DIGIT     shift, and go to state 15
+    '('       shift, and go to state 22
+
+    term     go to state 46
+    factor   go to state 25
+    INTEGER  go to state 26
+
+
+State 38
+
+   18 term: term MULTI . factor
+
+    UNARY_OP  shift, and go to state 21
+    DIGIT     shift, and go to state 15
+    '('       shift, and go to state 22
+
+    factor   go to state 47
+    INTEGER  go to state 26
+
+
+State 39
+
+   17 term: term DIVIDE . factor
+
+    UNARY_OP  shift, and go to state 21
+    DIGIT     shift, and go to state 15
+    '('       shift, and go to state 22
+
+    factor   go to state 48
+    INTEGER  go to state 26
+
+
+State 40
+
+   11 command: IF expr THEN . INTEGER
+
+    DIGIT  shift, and go to state 15
+
+    INTEGER  go to state 49
+
+
+State 41
+
+    6 command: LET VAR '=' expr .
+   12 expr: expr . PLUS term
+   13     | expr . MINUS term
+
+    PLUS   shift, and go to state 36
+    MINUS  shift, and go to state 37
+
+    $default  reduce using rule 6 (command)
+
+
+State 42
+
+    7 command: LET VAR '[' expr . ']' '=' expr
+   12 expr: expr . PLUS term
+   13     | expr . MINUS term
+
+    PLUS   shift, and go to state 36
+    MINUS  shift, and go to state 37
+    ']'    shift, and go to state 50
+
+
+State 43
+
+    8 command: DIM VAR AS '[' . expr ']'
+
+    LINENUM   shift, and go to state 19
+    VAR       shift, and go to state 20
+    UNARY_OP  shift, and go to state 21
+    DIGIT     shift, and go to state 15
+    '('       shift, and go to state 22
+
+    expr     go to state 51
+    term     go to state 24
+    factor   go to state 25
+    INTEGER  go to state 26
+
+
+State 44
+
+   20 factor: '(' expr ')' .
+
+    $default  reduce using rule 20 (factor)
+
+
+State 45
+
+   12 expr: expr PLUS term .
+   17 term: term . DIVIDE factor
+   18     | term . MULTI factor
+
+    MULTI   shift, and go to state 38
+    DIVIDE  shift, and go to state 39
+
+    $default  reduce using rule 12 (expr)
+
+
+State 46
+
+   13 expr: expr MINUS term .
+   17 term: term . DIVIDE factor
+   18     | term . MULTI factor
+
+    MULTI   shift, and go to state 38
+    DIVIDE  shift, and go to state 39
+
+    $default  reduce using rule 13 (expr)
+
+
+State 47
+
+   18 term: term MULTI factor .
+
+    $default  reduce using rule 18 (term)
+
+
+State 48
+
+   17 term: term DIVIDE factor .
+
+    $default  reduce using rule 17 (term)
+
+
+State 49
+
+   11 command: IF expr THEN INTEGER .
+   23 INTEGER: INTEGER . DIGIT
+
+    DIGIT  shift, and go to state 30
+
+    $default  reduce using rule 11 (command)
+
+
+State 50
+
+    7 command: LET VAR '[' expr ']' . '=' expr
+
+    '='  shift, and go to state 52
+
+
+State 51
+
+    8 command: DIM VAR AS '[' expr . ']'
+   12 expr: expr . PLUS term
+   13     | expr . MINUS term
+
+    PLUS   shift, and go to state 36
+    MINUS  shift, and go to state 37
+    ']'    shift, and go to state 53
+
+
+State 52
+
+    7 command: LET VAR '[' expr ']' '=' . expr
+
+    LINENUM   shift, and go to state 19
+    VAR       shift, and go to state 20
+    UNARY_OP  shift, and go to state 21
+    DIGIT     shift, and go to state 15
+    '('       shift, and go to state 22
+
+    expr     go to state 54
+    term     go to state 24
+    factor   go to state 25
+    INTEGER  go to state 26
+
+
+State 53
+
+    8 command: DIM VAR AS '[' expr ']' .
+
+    $default  reduce using rule 8 (command)
+
+
+State 54
+
+    7 command: LET VAR '[' expr ']' '=' expr .
+   12 expr: expr . PLUS term
+   13     | expr . MINUS term
+
+    PLUS   shift, and go to state 36
+    MINUS  shift, and go to state 37
+
+    $default  reduce using rule 7 (command)
